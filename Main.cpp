@@ -206,15 +206,15 @@ class Controller
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         {
-			m_model->dir = 3;
+	    m_model->dir = 3;
             m_model->speed = 0.1;
-		}
+	}
 
-		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
         {
-			m_model->dir = 2;
+	    m_model->dir = 2;
             m_model->speed = 0.1;
-		}
+	}
 
         m_model->Logic(time);
     }
