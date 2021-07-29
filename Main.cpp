@@ -77,7 +77,7 @@ class Model
         for (int j = x / 32; j < (x + w) / 32; j++)
         {
 
-            if ((Map[i][j] == 'S'))
+            if ((Map[i][j] == 'S') || (Map[i][j] == 'H'))
             {
                 if (dy > 0)
                 {
