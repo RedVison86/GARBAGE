@@ -142,6 +142,7 @@ class View
 
     void Draw()
     {
+        /* draw map */
         for (int i = 0; i < H_MAP; i++)
         for (int j = 0; j < W_MAP; j++)
         {
@@ -163,6 +164,27 @@ class View
 
             m_model->mapSpr.setPosition(j * 32, i *32);
             window().draw(m_model->mapSpr);
+        }
+
+        /* draw car */
+        if (m_model->dir == 1)
+        {
+            m_model->spr.setTextureRect(sf::IntRect(68, 17, 34, 17));
+        }
+
+        if (m_model->dir == 0)
+        {
+            m_model->spr.setTextureRect(sf::IntRect(68, 0, 34, 17));
+        }
+
+        if (m_model->dir == 3)
+        {
+            m_model->spr.setTextureRect(sf::IntRect(34, 0, 17, 34));
+        }
+
+        if (m_model->dir == 2)
+        {
+            m_model->spr.setTextureRect(sf::IntRect(51, 0, 17, 34));
         }
 
         window().draw(m_model->spr);
@@ -206,15 +228,15 @@ class Controller
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         {
-	    m_model->dir = 3;
+			m_model->dir = 3;
             m_model->speed = 0.1;
-	}
+		}
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
         {
-	    m_model->dir = 2;
+			m_model->dir = 2;
             m_model->speed = 0.1;
-	}
+		}
 
         m_model->Logic(time);
     }
@@ -245,7 +267,7 @@ class Controller
 
 int main()
 {
-    Model model("car.png", 100, 100, 32.0, 15.0);
+    Model model("car.png", 100, 100, 34.0, 17.0);
     View view(&model);
     Controller controller(&model, &view);
     controller.Run();
