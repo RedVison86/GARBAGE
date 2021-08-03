@@ -80,13 +80,11 @@ class Model
                 else if (dx < 0)    x = j * 32 + 32;
             }
 
-            if ((Map[i][j] == 'G') && (inventory == 0))
-            {
+            if ((Map[i][j] == 'G') && (inventory == 0)) {
                 Map[i][j] = ' ';
                 inventory++;
-            }
-            else if ((Map[i][j] == 'T') && (inventory > 0))
-            {
+
+            } else if ((Map[i][j] == 'T') && (inventory > 0)) {
                 inventory = 0;
             }
         }
@@ -211,15 +209,15 @@ class Controller
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         {
-	    m_model->dir = 3;
+            m_model->dir = 3;
             m_model->speed = 0.1;
-	}
+		}
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
         {
-	    m_model->dir = 2;
+			m_model->dir = 2;
             m_model->speed = 0.1;
-	}
+		}
 
         m_model->Logic(time);
     }
