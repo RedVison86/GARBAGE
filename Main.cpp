@@ -121,6 +121,12 @@ class View
 
     void Draw()
     {
+        DrawMap();
+        DrawCar();
+    }
+
+    void DrawMap()
+    {
         /* draw map */
         for (int i = 0; i < H_MAP; i++)
         for (int j = 0; j < W_MAP; j++)
@@ -150,6 +156,10 @@ class View
             window().draw(m_model->mapSpr);
         }
 
+    }
+
+    void DrawCar()
+    {
         /* draw car */
         switch(m_model->dir)
         {
@@ -213,11 +223,11 @@ class Controller
             m_model->speed = 0.1;
 		}
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
         {
-	    m_model->dir = 2;
+            m_model->dir = 2;
             m_model->speed = 0.1;
-	}
+        }
 
         m_model->Logic(time);
     }
