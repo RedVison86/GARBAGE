@@ -1,6 +1,7 @@
-#include <cstdio>
 #include <iostream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 const int H_MAP = 10;
 const int W_MAP = 15;
@@ -31,7 +32,7 @@ class Model
     sf::Sprite mapSpr;
 
     float x, y, w, h, dx, dy, speed;
-    int dir, inventory;
+    int dir, inventory, magicNumber;
 
     Model(std::string F, float X, float Y, float W, float H)
     {
@@ -83,6 +84,8 @@ class Model
             if ((Map[i][j] == 'G') && (inventory == 0)) {
                 Map[i][j] = ' ';
                 inventory++;
+                magicNumber++;
+
 
             } else if ((Map[i][j] == 'T') && (inventory > 0)) {
                 inventory = 0;
@@ -98,6 +101,11 @@ class View
     sf::RenderWindow m_window;
 
     public:
+
+    sf::Font font;
+    sf::Text text;
+
+
     View(Model *model)
     {
         m_model = model;
@@ -109,6 +117,7 @@ class View
     bool Init()
     {
         window().create(sf::VideoMode(600, 400), "GARBAGE");
+        font.loadFromFile("Arial.ttf");
         return true;
     }
 
@@ -122,6 +131,7 @@ class View
     void Draw()
     {
         DrawMap();
+        DrawText();
         DrawCar();
     }
 
@@ -156,6 +166,18 @@ class View
             window().draw(m_model->mapSpr);
         }
 
+    }
+
+    void DrawText()
+    {
+        std::ostringstream magicNumString;
+        magicNumString << m_model->magicNumber;
+
+        text.setFont(font);
+        text.setCharacterSize(25);
+        text.setString("Get bags:" + magicNumString.str());
+
+        window().draw(text);
     }
 
     void DrawCar()
@@ -193,6 +215,7 @@ class Controller
 
     public:
     sf::Event c_event;
+    int backtime;
     float time;
     sf::Clock clock;
 
@@ -201,6 +224,7 @@ class Controller
     {
         m_model = model;
         v_view = view;
+        backtime = 20;
     };
 
     void ControllPlayer(float time)
@@ -221,9 +245,9 @@ class Controller
         {
             m_model->dir = 3;
             m_model->speed = 0.1;
-	}
+        }
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
         {
             m_model->dir = 2;
             m_model->speed = 0.1;
@@ -232,18 +256,41 @@ class Controller
         m_model->Logic(time);
     }
 
+    sf::Clock gameClock;
+
+    void Reset()
+    {
+        gameClock.restart();
+        v_view->window().close();
+    }
+
     void Run()
     {
+
         while(v_view->window().isOpen())
         {
             time = clock.getElapsedTime().asMicroseconds();
+
             clock.restart();
+
+            sf::Time elapsed = gameClock.getElapsedTime();
+
+            std::cout << elapsed.asSeconds() << std::endl;
+
             time = time / 800;
+
+            if ((elapsed.asSeconds() > 10.f) && (m_model->magicNumber == 13))
+            {
+                Reset();
+            }
 
             while(v_view->window().pollEvent(c_event))
             {
                 if (c_event.type == sf::Event::Closed)
+                {
                     v_view->window().close();
+                    gameClock.restart();
+                }
             }
 
             ControllPlayer(time);
@@ -264,4 +311,3 @@ int main()
     controller.Run();
     return 0;
 }
-
